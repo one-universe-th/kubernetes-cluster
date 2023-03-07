@@ -1,0 +1,43 @@
+version: "3"
+services:
+  server:
+    container_name: "one-universe-server"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+    volumes:
+      - .:/go/src/github.com/nutthanon/one-universe-server
+    networks:
+      - my-network
+
+  database:
+    image: mongo:latest
+    container_name: "database"
+    restart: always
+    ports:
+      - 8001:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=go-nosql
+      - MONGO_INITDB_USERNAME=root
+      - MONGO_INITDB_PASSWORD=password
+    networks:
+      - my-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    container_name: redisdb-container
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

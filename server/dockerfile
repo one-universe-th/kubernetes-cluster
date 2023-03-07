@@ -1,0 +1,9 @@
+FROM golang:1.18
+
+WORKDIR /go/src/one-universe
+
+COPY . .
+
+RUN go build -o bin/server cmd/app.go
+
+CMD ["./bin/server"]
